@@ -1,0 +1,45 @@
+SetEnv PHP_VER 5
+
+SetEnv REGISTER_GLOBALS 0
+SetEnv ZEND_OPTIMIZER 1
+SetEnv MAGIC_QUOTES 0
+
+# Commenter la ligne ci-dessous si plantage
+# php_flag zlib.output_compression on
+
+# Activer le filtre
+SetOutputFilter DEFLATE
+
+# Certains navigateurs ne peuvent pas avoir GZIP (les vieux)
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+
+# Certains navigateurs ne peuvent pas avoir GZIP (les vieux)
+BrowserMatch ^Mozilla/4\.0678 no-gzip
+
+# On ne veut pas d'IE
+BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+
+# On ne compresse pas les images, elles le sont deja .
+SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+
+#on gere le cas des proxy
+Header append Vary User-Agent env=!dont-vary
+
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME}  !-f
+RewriteRule ^medias/(.*)$ /datas/medias/$1 [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME}  !-f  [NC]
+RewriteRule ^blog/(.*\.(gif|jpg|png))$ /datas/medias/$1 [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME}  !-f  [NC]
+RewriteRule ^(.*\.(gif|jpg|png))$ /datas/medias/$1 [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME}  !-f  [NC]
+RewriteRule ^softwares/(.*)$ /$1 [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME}  !-f  [NC]
+RewriteCond %{REQUEST_URI} !^/owncloud  [NC]
+RewriteRule ^(.*) /index.php?path=$1 [E=REMOTE_USER:%{HTTP:Authorization},L]
+
