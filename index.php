@@ -33,9 +33,11 @@
     include('config.php');
 
     function Kht_GetRootPath() {
+        global $config;
         return $config['InstallPath'];
     }
     function Kht_IsCurrentPage($page) {
+        global $config;
         if ($page === $config['InstallPath'] . basename ( Kht_GetRequest(),'.md'))
             return True;
         return False;            
@@ -81,8 +83,15 @@
                     if (substr($line, 0, 1) !== ':') 
                         {$ccontent.=$line."\n";}
                 }
-                $Kht_Content = Markdown($ccontent);
+                $tags = Kht_ExtractTags($fcontent);
+                if ($tags !== '')
+                    $Kht_Content['tags'] = $tags;                
+                $date = Kht_ExtractDate($fcontent);
+                if ($date !== '')
+                    $Kht_Content['date'] = $date;
+                $Kht_Content['data'] = Markdown($ccontent);
                 }
+                
         
             //Templatization
             ob_start("ob_gzhandler");
@@ -217,7 +226,7 @@
                 $post['data'] = Markdown($ccontent);
                 $post['date'] = $content_date;
                 $post['tags'] = Kht_ExtractTags($fcontent);
-                $post['link'] = '/blog/'.htmlentities(pathinfo($dir_content, PATHINFO_FILENAME));
+                $post['link'] = Kht_GetRootPath().'blog/'.htmlentities(pathinfo($dir_content, PATHINFO_FILENAME));
                 $post['title'] = pathinfo($dir_content, PATHINFO_FILENAME);
                 $Kht_Content[] = $post;
             }        
@@ -252,7 +261,7 @@
     
     function Kht_Main() {
         $request = Kht_GetRequest();
-        Kht_Redirect($request);
+        Kht_Redirect($request);        
         
         if ($request == 'blog') {
             $cached = Kht_ServePageCache('blog.html');
