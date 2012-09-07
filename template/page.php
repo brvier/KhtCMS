@@ -1,28 +1,22 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-GB">
 
 	<head>		
 		
 		<meta charset="utf-8">
-        <meta name="description" content="Benoît HERVIER (Khertan) Developer Web Site : Maemo, MeeGo, Python and Open source software" />
-        <meta name="keywords" content="Maemo, MeeGo, Python, Software, Developer" />
-        <meta name="author" content="Benoît HERVIER">
-        <meta name="wot-verification" content="64f0ac308d5a2d36b5d3"/> 
+        <meta name="description" content="<?php echo $config['Description']; ?>" />
+        <meta name="keywords" content=<?php echo $config['Keywords']; ?> />
+        <meta name="author" content="<?php echo $config['Author']; ?>">
         
-		<title>Benoît HERVIER (Khertan) / <?php echo $Kht_Title; ?></title>		                        
-        <link title="Khertan News"  rel="alternate"  type="application/rss+xml"  href="http://khertan.net/rss.php" />
-        <link rel="stylesheet" href="/template/styles/style.css" /> 
+		<title><?php echo $config['Title'] . $Kht_Title; ?></title>		                        
+        <link title="<?php echo $config['Title']; ?> News"  rel="alternate"  type="application/rss+xml"  href="<?php echo $config['InstallPath']; ?>/rss.php" />
+        <link rel="stylesheet" href="<?php echo $config['InstallPath']; ?>/template/styles/style.css" /> 
         
-		<script type="text/javascript" language="javascript" src="/template/styles/jquery.min.js"></script>
-		<script type="text/javascript" language="javascript" src="/template/styles/jquery.dataTables.js"></script>
-		<style type="text/css" title="currentStyle">
-			@import "/styles/filterandsort_table.css";
-		</style> 
-
-        <link type="text/css" rel="stylesheet" href="/template/syntaxhighlighter/styles/shThemeRDark.css"/>
-		<script src="/template/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></script>
-        <script src="/template/syntaxhighlighter/scripts/shAutoloader.js" type="text/javascript"></script>
-        <script src="/template/syntaxhighlighter/scripts/shBrushPython.js" type="text/javascript"></script>
+        <link type="text/css" rel="stylesheet" href="<?php echo $config['InstallPath']; ?>/template/syntaxhighlighter/styles/shThemeRDark.css"/>
+		<script src="<?php echo $config['InstallPath']; ?>/template/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></script>
+        <script src="<?php echo $config['InstallPath']; ?>/template/syntaxhighlighter/scripts/shAutoloader.js" type="text/javascript"></script>
+        <script src="<?php echo $config['InstallPath']; ?>/template/syntaxhighlighter/scripts/shBrushPython.js" type="text/javascript"></script>
  
         <script type="text/javascript">
             SyntaxHighlighter.all();
@@ -46,8 +40,8 @@
     <body> 
         <div id="header"> 
                	                                        
-                <a href="/" title="Khertan.net Logo"><img src="/template/styles/logo.png" width=122 height=127></a>               
-                <h1>Benoît HERVIER</h1>
+                <a href="/" title="<?php echo $config['Title']; ?> Logo"><img src="<?php echo $config['InstallPath']; ?>/template/styles/logo.png" width=122 height=127></a>               
+                <h1><?php echo $config['Title']; ?></h1>
                 <div id="nav">
                 	
                 	<ul>                 	     	

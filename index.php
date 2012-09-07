@@ -30,13 +30,16 @@
             -> Pages
     */
     
+    include('config.php');
+    
     function Kht_GetRequest() {
+        global $config;
         if (array_key_exists('path', $_REQUEST)) 
             $request = htmlspecialchars(stripslashes($_REQUEST['path']));
         else {
-            return 'blog';
+            return strtolower($config['Default']);
         }
-        if ($request === '') return 'blog';
+        if ($request === '') return strtolower($config['Default']);
         $request=trim($request,'/');
         return $request;
     }
@@ -45,6 +48,7 @@
         
         
         // SERVE CONTENT WITH THE TEMPLATE
+        global $config;
         $Kht_Content = '';
         $Kht_Title = basename ( $page , '.md');
         $Kht_CurrentPage = basename ( $page , '.md');
@@ -124,8 +128,9 @@
     }
     
     function Kht_ServePageCache($page) {
+        global $config;
         $cache_path = './cache/' . str_replace('/','_',$page) . '.html';
-        if (is_file($cache_path)) {
+        if ((is_file($cache_path)) && ($config['UseCache'])){
             if (filemtime($cache_path) < filemtime($page)) {
                 return False;}
             else {
@@ -172,6 +177,7 @@
     function Kht_ServeLastBlog($limit = 5){
     
         // SERVE CONTENT WITH THE TEMPLATE
+        global $config;
         $Kht_Content = array();
         $Kht_Title = 'Blog';
         $Kht_CurrentPage = 'blog';

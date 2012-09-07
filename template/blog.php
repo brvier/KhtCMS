@@ -9,20 +9,14 @@
         <meta name="author" content="Benoît HERVIER">
         <meta name="wot-verification" content="64f0ac308d5a2d36b5d3"/> 
         
-		<title>Benoît HERVIER (Khertan) / <?php echo $Kht_Title; ?></title>		                        
-        <link title="Khertan News"  rel="alternate"  type="application/rss+xml"  href="http://khertan.net/rss.php" />
-        <link rel="stylesheet" href="/template/styles/style.css" /> 
+		<title><?php echo $config['Title'] . $Kht_Title; ?></title>		                        
+        <link title="<?php echo $config['Title']; ?> News"  rel="alternate"  type="application/rss+xml"  href="<?php echo $config['InstallPath']; ?>/rss.php" />
+        <link rel="stylesheet" href="<?php echo $config['InstallPath']; ?>/template/styles/style.css" /> 
         
-		<script type="text/javascript" language="javascript" src="/template/styles/jquery.min.js"></script>
-		<script type="text/javascript" language="javascript" src="/template/styles/jquery.dataTables.js"></script>
-		<style type="text/css" title="currentStyle">
-			@import "/styles/filterandsort_table.css";
-		</style> 
-
-        <link type="text/css" rel="stylesheet" href="/template/syntaxhighlighter/styles/shThemeRDark.css"/>
-		<script src="/template/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></script>
-        <script src="/template/syntaxhighlighter/scripts/shAutoloader.js" type="text/javascript"></script>
-        <script src="/template/syntaxhighlighter/scripts/shBrushPython.js" type="text/javascript"></script>
+        <link type="text/css" rel="stylesheet" href="<?php echo $config['InstallPath']; ?>/template/syntaxhighlighter/styles/shThemeRDark.css"/>
+		<script src="<?php echo $config['InstallPath']; ?>/template/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></script>
+        <script src="<?php echo $config['InstallPath']; ?>/template/syntaxhighlighter/scripts/shAutoloader.js" type="text/javascript"></script>
+        <script src="<?php echo $config['InstallPath']; ?>/template/syntaxhighlighter/scripts/shBrushPython.js" type="text/javascript"></script>
  
         <script type="text/javascript">
             SyntaxHighlighter.all();
@@ -46,7 +40,7 @@
     <body> 
         <div id="header"> 
                	                                        
-                <a href="/" title="Khertan.net Logo"><img src="/template/styles/logo.png" width=122 height=127></a>               
+                <a href="/" title="Khertan.net Logo"><img src="<?php echo $config['InstallPath']; ?>/template/styles/logo.png" width=122 height=127></a>               
                 <h1>Benoît HERVIER</h1>
                 <div id="nav">
                 	

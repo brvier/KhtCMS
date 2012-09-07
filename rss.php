@@ -1,4 +1,7 @@
 <?php
+
+include_once('./config.php');
+
 class RSSFeed {
     // VARIABLES
     // channel vars
@@ -55,37 +58,25 @@ class RSSFeed {
     }
     // output feed
     function Output() {
-        $output =  '<?xml version="1.0" encoding="iso-8859-1"?>'."\n";
-        $output .= '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://purl.org/rss/1.0/" xmlns:slash="http://purl.org/rss/1.0/modules/slash/" xmlns:taxo="http://purl.org/rss/1.0/modules/taxonomy/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:syn="http://purl.org/rss/1.0/modules/syndication/" xmlns:admin="http://webns.net/mvcb/" xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0">'."\n";
-        $output .= '<channel rdf:about="'.$this->channel_url.'">'."\n";
-        $output .= '<title>'.$this->channel_title.'</title>'."\n";
-        $output .= '<link>'.$this->channel_url.'</link>'."\n";
-        $output .= '<description>'.$this->channel_description.'</description>'."\n";
-        $output .= '<dc:language>'.$this->channel_lang.'</dc:language>'."\n";
-        $output .= '<dc:rights>'.$this->channel_copyright.'</dc:rights>'."\n";
-        $output .= '<dc:date>'.$this->channel_date.'</dc:date>'."\n";
-        $output .= '<dc:creator>'.$this->channel_creator.'</dc:creator>'."\n";
-        $output .= '<dc:subject>'.$this->channel_subject.'</dc:subject>'."\n";
+        $output =  '<?xml version="1.0" encoding="utf-8"?>'."\n";
+        $output .= '<rss version="2.0"><channel>';
+        $output .= '<title>'.$this->channel_title.'</title>';
+        $output .= '<link>'.$this->channel_url.'</link>';
+        $output .= '<description>'.$this->channel_description.'</description>';
+        $output .= '<language>'.$this->channel_lang.'</language>';
 
-        $output .= '<items>'."\n";
-        $output .= '<rdf:Seq>';
+
+        //$output .= '</channel>'."\n";
         for($k=0; $k<$this->nritems; $k++) {
-            $output .= '<rdf:li rdf:resource="'.$this->items[$k]['url'].'"/>'."\n"; 
-        };    
-        $output .= '</rdf:Seq>'."\n";
-        $output .= '</items>'."\n";
-        $output .= '<image rdf:resource="'.$this->image_url.'"/>'."\n";
-        $output .= '</channel>'."\n";
-        for($k=0; $k<$this->nritems; $k++) {
-            $output .= '<item rdf:about="'.$this->items[$k]['url'].'">'."\n";
-            $output .= '<title><![CDATA['.$this->items[$k]['title'].']]></title>'."\n";
-            $output .= '<pubDate><![CDATA['.$this->items[$k]['date'].']]></pubDate>'."\n";
-            $output .= '<link>'.$this->items[$k]['url'].'</link>'."\n";
-            $output .= '<description><![CDATA['.$this->items[$k]['description'].']]></description>'."\n";
-            $output .= '<feedburner:origLink>'.$this->items[$k]['url'].'</feedburner:origLink>'."\n";
-            $output .= '</item>'."\n";  
+            $output .= '<item>';
+            $output .= '<title>'.$this->items[$k]['title'].'</title>';
+            $output .= '<pubDate><![CDATA['.$this->items[$k]['date'].']]></pubDate>';
+            $output .= '<link>'.$this->channel_url.$this->items[$k]['url'].'</link>';
+            $output .= '<guid>'.$this->channel_url.$this->items[$k]['url'].'</guid>';
+            $output .= '<description><![CDATA['.$this->items[$k]['description'].']]></description>';
+            $output .= '</item>';  
         };
-        $output .= '</rdf:RDF>'."\n";
+        $output .= '</channel></rss>';
         return $output;
     }
 };
@@ -149,20 +140,19 @@ class RSSFeed {
                 $Kht_Content[] = $post;
             }        
         }
-        
         return $Kht_Content;
     }
 
 header('Content-type: text/xml');
 
 $myfeed = new RSSFeed();
-$myfeed->SetChannel('http://khertan.net/rss.php',
-          'Khertan.net RSS',
-          'Khertan.net News',
-          'en-us',
-          'Copyleft',
-          'Benoît HERVIER (Khertan)',
-          'Benoît HERVIER (Khertan) Developer Web Site : Maemo, MeeGo, Python and Open source software');
+$myfeed->SetChannel('http://khertan.net/',
+          $config['Name'].' RSS',
+          $config['Name'].' News',
+          $config['Lang'],
+          $config['Licence'],
+          $config['Author'],
+          $config['Description']);
 $myfeed->SetImage('http://khertan.net/layout/logo.jpg');
 
 include_once('./libs/markdown.php');

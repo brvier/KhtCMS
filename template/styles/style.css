@@ -8,18 +8,32 @@ Inspired by Jumo HTML Template (http://www.chris-creed.com)
 
 @import "reset.css";
 
+@font-face {
+    font-family: "Nokia Pure Text";
+    font-style: normal;
+    font-weight: normal;
+    src: url("/template/styles/nokiapuretext-webfont.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Nokia Pure Headline";
+    font-style: normal;
+    font-weight: normal;
+    src: url("/template/styles/nokiapureheadlinerg-webfont.woff") format("woff");
+}
+
 
 /* -------------------- */
 /* -- General Styles -- */
 /* -------------------- */
 #wrap { width: 740px; margin: 0 auto; text-align: center; }
 body { background-color: #fff; color: #222222;  font: 14px "Nokia Pure Text", "Myriad Pro",sans-serif; text-align: center; font-weight: 100; letter-spacing: -0.2px; line-height: 20px;}
-h1 { font: 30px "Myriad Pro",sans-serif; margin: 10px 0 10px 0; color:#429DFF; padding-left: 0px; letter-spacing: -0.2px}
-h2 { font: 20px "Myriad Pro",sans-serif; margin: 10px 0 10px 0; color:#555753; padding-left: 5px; letter-spacing: -0.2px}
-h3 { font: 17px "Myriad Pro",sans-serif; margin: 20px 0 10px 0; padding-left: 10px;}
-h4 { font: 16px "Myriad Pro",sans-serif; font-style: italic; margin: 30px 0 10px 0; }
-h5 { font: 14px "Myriad Pro",sans-serif; margin: 10px 0 10px 0; }
-h6 { font: 12px"Myriad Pro",sans-serif; margin: 10px 0 10px 0; }
+h1 { font: 30px "Nokia Pure Text", "Myriad Pro",sans-serif; margin: 10px 0 10px 0; color:#429DFF; padding-left: 0px; letter-spacing: -0.2px}
+h2 { font: 20px "Nokia Pure Text", "Myriad Pro",sans-serif; margin: 10px 0 10px 0; color:#555753; padding-left: 5px; letter-spacing: -0.2px}
+h3 { font: 17px "Nokia Pure Text", "Myriad Pro",sans-serif; margin: 20px 0 10px 0; padding-left: 10px;}
+h4 { font: 16px "Nokia Pure Text", "Myriad Pro",sans-serif; font-style: italic; margin: 30px 0 10px 0; }
+h5 { font: 14px "Nokia Pure Text", "Myriad Pro",sans-serif; margin: 10px 0 10px 0; }
+h6 { font: 12px "Nokia Pure Text", "Myriad Pro",sans-serif; margin: 10px 0 10px 0; }
 //table {margin: 0 auto; width:100%; border:1px solid #333;}
 //td {border-right:1px solid #999;border-bottom:1px solid #999;padding: 5px;}
 //th {border-right:1px solid #999;border-bottom:1px solid #999;padding: 5px;}
@@ -67,36 +81,27 @@ ul, ol { padding-left: 50px;}
 /* -------------- */
 /* -- Articles -- */
 /* -------------- */
-.article { margin: 15px 0 20px 0; background-color: #E3E3E3; padding: 5px 20px 5px 20px;
+/*.article { margin: 15px 0 20px 0; background-color: #E3E3E3; padding: 5px 20px 5px 20px;
     -webkit-border-radius: 10px;
     -webkit-border-bottom-right-radius: 0;
     -moz-border-radius: 10px;
     -moz-border-radius-bottomright: 0;
     border-radius: 10px;
     border-bottom-right-radius: 0;
- }
+ }*/
+ .article { margin: 15px 0 20px 0; background-color: #FFFFFF; padding: 5px 20px 5px 20px; }
 .article .title { margin: 0 0 -2px 0; font-size: 18px; }
-.article p.meta { font-size: 16px; margin: 0 0 15px 0; color: #aaa; text-align: right;}
+.article p.meta { font-size: 10px; margin: -15px 0 15px 0;  color: #666; text-align: right;}
 .next-articles { margin: 0 0 0 0; }
 .more-link { display: block; margin: 20px 0 0 0; }
 p.archive-link {display: block; text-align:center;}
 .syntaxhighlighter { margin: 15px 15px 20px 15px; background-color: #E3E3E3; padding: 5px 20px 5px 20px; }
 form { background-color: #E3E3E3;}
 .article ul {margin-bottom: 20px;}
-/* ---------------------- */
-/* -- Bug Tracker Form -- */
-/* ---------------------- */
-table.bugtracker {margin: 10px 40px 10px 40px; border:0px solid #333;padding:10px;}
-td.bugtracker {border-right:0px solid #999;border-bottom:0px solid #999;padding: 15px; vertical-align: middle;}
-tr.bugtracker {border-right:0px solid #999;border-bottom:0px solid #999;padding: 15px;}
-label {width:150px;}
-input {width: 150px;}
-input.fulllength {width:100%;}
-textarea {width: 100%; }
-p.leftalign {text-align: right;}
+
 /* ------------ */
 /* -- Footer -- */
 /* ------------ */
-#footer { clear: both; font-size: 14px; color: #888; padding: 0 0 20px 0; }
-#footer .copyright { text-align: center; padding: 8px 0 0 0; }
-.footer-line { border-bottom: 2px solid #eee; }
+#footer { clear: both; font-size: 14px; background-color: #333333;  color: #BBB; padding: 0 0 20px 0; }
+#footer .copyright { text-align: center; padding: 8px 0 0 0;}
+//.footer-line { border-bottom: 2px solid #eee; }
