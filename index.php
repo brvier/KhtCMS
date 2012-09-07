@@ -50,6 +50,8 @@
         // SERVE CONTENT WITH THE TEMPLATE
         global $config;
         $Kht_Content = '';
+        $Kht_CurrentPath = $config['InstallPath'] . basename ( $page , '.md');
+        $Kht_CurrentPath;
         $Kht_Title = basename ( $page , '.md');
         $Kht_CurrentPage = basename ( $page , '.md');
         
@@ -181,6 +183,7 @@
         $Kht_Content = array();
         $Kht_Title = 'Blog';
         $Kht_CurrentPage = 'blog';
+        $Kht_CurrentPath = $config['InstallPath'].'blog';
         include_once('libs/markdown.php');
         $path = './datas/blog/';
         $dir_contents = Kht_ReadDir($path);

@@ -29,13 +29,14 @@
                                             'Keywords' => 'Maemo, MeeGo, Python, Software, Developer',
                                             'Author' => 'Benoît HERVIER',
                                             'Lang' => 'en-GB',
-                                            'Menu' => array('/KhtCMS/About'=>'About & Contact',
-                                                                      '/KhtCMS/Blog' => 'Blog',
-                                                                       '/KhtCMS/Projects' => 'Projects',
+                                            'Menu' => array('/KhtCMS/about'=>'About & Contact',
+                                                                      '/KhtCMS/blog' => 'Blog',
+                                                                       '/KhtCMS/projects' => 'Projects',
                                                                      ),
                                             'Default' => 'Blog',
                                             'Licence' => 'http://creativecommons.org/licenses/by/3.0/',
                                             'UseCache' => False,
+                                            'Theme' => 'Kht',
                                             'InstallPath' => '/KhtCMS/',
                                             
     );

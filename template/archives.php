@@ -9,7 +9,7 @@
         <meta name="author" content="Benoît HERVIER">
         <meta name="wot-verification" content="64f0ac308d5a2d36b5d3"/> 
         
-		<title><?php echo $config['Title'] . $Kht_Title; ?></title>		                        
+		<title><?php echo $config['Title'] .' : '. $Kht_Title; ?></title>		   	                        
         <link title="<?php echo $config['Title']; ?> News"  rel="alternate"  type="application/rss+xml"  href="<?php echo $config['InstallPath']; ?>/rss.php" />
         <link rel="stylesheet" href="<?php echo $config['InstallPath']; ?>/template/styles/style.css" /> 
         
@@ -40,15 +40,21 @@
     <body> 
         <div id="header"> 
                	                                        
-                <a href="/" title="Khertan.net Logo"><img src="<?php echo $config['InstallPath']; ?>/template/styles/logo.png" width=122 height=127></a>               
-                <h1>Benoît HERVIER</h1>
+                <a href="/" title="<?php echo $config['Title']; ?> Logo"><img src="<?php echo $config['InstallPath']; ?>/template/styles/logo.png" width=122 height=127></a>               
+                <h1><?php echo $config['Title']; ?></h1>
                 <div id="nav">
                 	
                 	<ul>                 	     	
-						<li><a href="/about" title ="Link to the About Page" <?php if ($Kht_CurrentPage === 'about.md') echo 'class="current"'; ?>>About & Contact</a><span>/</span></li>
-						<li><a href="/blog" title ="Link to the Home Page" <?php if ($Kht_CurrentPage === 'blog') echo 'class="current"'; ?>>Blog</a><span>/</span></li>
-						<li><a href="/projects" title ="Link to the Software Page" <?php if ($Kht_CurrentPage === 'projects') echo 'class="current"'; ?>>Projects</a><span></span></li>
-            		</ul>            	
+                         <?php 
+                                foreach ($config['Menu'] as $link => $title) {                                   
+                                    if ($Kht_CurrentPath === $link) {
+                                        echo '<li><a href="'.$link.'" class="current" title= "'.$title.'">'.$title.'</a><span> </span></li>'; 
+                                    } else {
+                                        echo '<li><a href="'.$link.'" title= "'.$title.'">'.$title.'</a><span> </span></li>';
+                                    }
+                                }
+                          ?>
+                    </ul>            	
                 </div>                
             </div>
                         
