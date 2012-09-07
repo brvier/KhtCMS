@@ -29,9 +29,9 @@
                                             'Keywords' => 'Maemo, MeeGo, Python, Software, Developer',
                                             'Author' => 'BenoÃ®t HERVIER',
                                             'Lang' => 'en-GB',
-                                            'Menu' => array('About'=>'About & Contact',
-                                                                      'Blog' => 'Blog',
-                                                                       'Projects' => 'Projects',
+                                            'Menu' => array('/KhtCMS/About'=>'About & Contact',
+                                                                      '/KhtCMS/Blog' => 'Blog',
+                                                                       '/KhtCMS/Projects' => 'Projects',
                                                                      ),
                                             'Default' => 'Blog',
                                             'Licence' => 'http://creativecommons.org/licenses/by/3.0/',
@@ -41,47 +41,33 @@
     );
     
     //DO NOT EDIT BEYONG THIS LINE
-    if (!@file_exists($config['InstallPath'].'.htaccess')) {
-        $content = "SetEnv PHP_VER 5";
+    if (@file_exists('./.htaccess')) {
+    } else {
+        $content = "SetEnv PHP_VER 5\n";
         $content .= "\n";
         $content .= "\n";
-        $content .= "SetEnv REGISTER_GLOBALS 0";
-        $content .= "SetEnv ZEND_OPTIMIZER 1";
-        $content .= "SetEnv MAGIC_QUOTES 0";
-        $content .= "# Activer le filtre";
-        $content .= "SetOutputFilter DEFLATE";
+        $content .= "SetEnv REGISTER_GLOBALS 0\n";
+        $content .= "SetEnv ZEND_OPTIMIZER 1\n";
+        $content .= "SetEnv MAGIC_QUOTES 0\n";
         $content .= "\n";
-        $content .= "# Certains navigateurs ne peuvent pas avoir GZIP (les vieux)";
-        $content .= "BrowserMatch ^Mozilla/4 gzip-only-text/html";
+        $content .= "RewriteEngine on\n";
         $content .= "\n";
-        $content .= "# Certains navigateurs ne peuvent pas avoir GZIP (les vieux)";
-        $content .= "BrowserMatch ^Mozilla/4\.0678 no-gzip";
+        $content .= "RewriteCond %{REQUEST_FILENAME}  !-f\n";
+        $content .= "RewriteRule ^medias/(.*)$ ".$config['InstallPath']."datas/medias/$1 [QSA,L]\n";
         $content .= "\n";
-        $content .= "# On ne veut pas d'IE";
-        $content .= "BrowserMatch \bMSIE !no-gzip !gzip-only-text/html";
+        $content .= "RewriteCond %{REQUEST_FILENAME}  !-f  [NC]\n";
+        $content .= "RewriteRule ^blog/(.*\.(gif|jpg|png))$ ".$config['InstallPath']."datas/medias/$1 [QSA,L]\n";
         $content .= "\n";
-        $content .= "# On ne compresse pas les images, elles le sont deja .";
-        $content .= "SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary";
+        $content .= "RewriteCond %{REQUEST_FILENAME}  !-f  [NC]\n";
+        $content .= "RewriteRule ^(.*\.(gif|jpg|png))$ ".$config['InstallPath']."datas/medias/$1 [QSA,L]\n";
         $content .= "\n";
+        $content .= "RewriteCond %{REQUEST_FILENAME}  !-f  [NC]\n";
+        $content .= "RewriteRule ^softwares/(.*)$ ".$config['InstallPath']."$1 [QSA,L]\n";
         $content .= "\n";
-        $content .= "RewriteEngine on";
-        $content .= "\n";
-        $content .= "RewriteCond %{REQUEST_FILENAME}  !-f";
-        $content .= "RewriteRule ^medias/(.*)$ ".$$config['InstallPath']."datas/medias/$1 [QSA,L]";
-        $content .= "\n";
-        $content .= "RewriteCond %{REQUEST_FILENAME}  !-f  [NC]";
-        $content .= "RewriteRule ^blog/(.*\.(gif|jpg|png))$ ".$$config['InstallPath']."datas/medias/$1 [QSA,L]";
-        $content .= "\n";
-        $content .= "RewriteCond %{REQUEST_FILENAME}  !-f  [NC]";
-        $content .= "RewriteRule ^(.*\.(gif|jpg|png))$ ".$$config['InstallPath']."datas/medias/$1 [QSA,L]";
-        $content .= "\n";
-        $content .= "RewriteCond %{REQUEST_FILENAME}  !-f  [NC]";
-        $content .= "RewriteRule ^softwares/(.*)$ ".$$config['InstallPath']."$1 [QSA,L]";
-        $content .= "\n";
-        $content .= "RewriteCond %{REQUEST_FILENAME}  !-f  [NC]";
-        $content .= "RewriteCond %{REQUEST_URI} !^/owncloud  [NC]";
-        $content .= "RewriteRule ^(.*) ".$$config['InstallPath']."index.php?path=$1 [E=REMOTE_USER:%{HTTP:Authorization},L]";
-        file_put_contents($$config['InstallPath'].'.htaccess',$content);
+        $content .= "RewriteCond %{REQUEST_FILENAME}  !-f  [NC]\n";
+        $content .= "RewriteCond %{REQUEST_URI} !^/owncloud  [NC]\n";
+        $content .= "RewriteRule ^(.*) ".$config['InstallPath']."index.php?path=$1 [E=REMOTE_USER:%{HTTP:Authorization},L]";
+        file_put_contents('./.htaccess',$content);
     }
     
 
