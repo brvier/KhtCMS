@@ -10,13 +10,14 @@
         <meta name="wot-verification" content="64f0ac308d5a2d36b5d3"/> 
         
 		<title><?php echo $config['Title'] .' : '. $Kht_Title; ?></title>		   	                        
-        <link title="<?php echo $config['Title']; ?> News"  rel="alternate"  type="application/rss+xml"  href="<?php echo $config['InstallPath']; ?>/rss.php" />
-        <link rel="stylesheet" href="<?php echo $config['InstallPath']; ?>/template/styles/style.css" /> 
+        <link title="<?php echo $config['Title']; ?> News"  rel="alternate"  type="application/rss+xml"  href="<?php echo Kht_GetRootPath(); ?>/rss.php" />
+        <link rel="stylesheet" href="<?php echo Kht_GetThemePath(); ?>/styles/style.css" /> 
         
-        <link type="text/css" rel="stylesheet" href="<?php echo $config['InstallPath']; ?>/template/syntaxhighlighter/styles/shThemeRDark.css"/>
-		<script src="<?php echo $config['InstallPath']; ?>/template/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></script>
-        <script src="<?php echo $config['InstallPath']; ?>/template/syntaxhighlighter/scripts/shAutoloader.js" type="text/javascript"></script>
-        <script src="<?php echo $config['InstallPath']; ?>/template/syntaxhighlighter/scripts/shBrushPython.js" type="text/javascript"></script>
+        <link type="text/css" rel="stylesheet" href="<?php echo Kht_GetThemePath(); ?>/syntaxhighlighter/styles/shThemeRDark.css"/>
+		<script src="<?php echo Kht_GetThemePath() ; ?>/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></script>
+        <script src="<?php echo Kht_GetThemePath() ; ?>/syntaxhighlighter/scripts/shAutoloader.js" type="text/javascript"></script>
+        <script src="<?php echo Kht_GetThemePath();  ?>/syntaxhighlighter/scripts/shBrushPython.js" type="text/javascript"></script>
+ 
  
         <script type="text/javascript">
             SyntaxHighlighter.all();
@@ -40,14 +41,14 @@
     <body> 
         <div id="header"> 
                	                                        
-                <a href="/" title="<?php echo $config['Title']; ?> Logo"><img src="<?php echo $config['InstallPath']; ?>/template/styles/logo.png" width=122 height=127></a>               
+                <a href="/" title="<?php echo $config['Title']; ?> Logo"><img src="<?php echo Kht_GetThemePath(); ?>/styles/logo.png" width=122 height=127></a>               
                 <h1><?php echo $config['Title']; ?></h1>
                 <div id="nav">
                 	
                 	<ul>                 	     	
                          <?php 
                                 foreach ($config['Menu'] as $link => $title) {                                   
-                                    if ($Kht_CurrentPath === $link) {
+                                    if (Kht_IsCurrentPage($link)) {
                                         echo '<li><a href="'.$link.'" class="current" title= "'.$title.'">'.$title.'</a><span> </span></li>'; 
                                     } else {
                                         echo '<li><a href="'.$link.'" title= "'.$title.'">'.$title.'</a><span> </span></li>';

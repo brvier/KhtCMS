@@ -31,6 +31,20 @@
     */
     
     include('config.php');
+
+    function Kht_GetRootPath() {
+        return $config['InstallPath'];
+    }
+    function Kht_IsCurrentPage($page) {
+        if ($page === $config['InstallPath'] . basename ( Kht_GetRequest(),'.md'))
+            return True;
+        return False;            
+    }
+    
+    function Kht_GetThemePath() {
+        global $config;
+        return $config['InstallPath']. 'themes/'. $config['Theme'];
+    }
     
     function Kht_GetRequest() {
         global $config;
@@ -72,7 +86,7 @@
         
             //Templatization
             ob_start("ob_gzhandler");
-            include './template/page.php';
+            include './themes/'.$config['Theme'].'/page.php';
             $content = ob_get_contents();
 
             }
@@ -212,9 +226,9 @@
         //Templatization
         ob_start("ob_gzhandler");
         if ($limit === -1)
-            include './template/archives.php';
+            include './themes/'.$config['Theme'].'/archives.php';
         else
-            include './template/blog.php';
+            include './themes/'.$config['Theme'].'/blog.php';
         $content = ob_get_contents();
 
         //Cache it

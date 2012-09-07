@@ -1,23 +1,24 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-GB">
 
 	<head>		
 		
 		<meta charset="utf-8">
-        <meta name="description" content="Benoît HERVIER (Khertan) Developer Web Site : Maemo, MeeGo, Python and Open source software" />
-        <meta name="keywords" content="Maemo, MeeGo, Python, Software, Developer" />
-        <meta name="author" content="Benoît HERVIER">
-        <meta name="wot-verification" content="64f0ac308d5a2d36b5d3"/> 
+        <meta name="description" content="<?php echo $config['Description']; ?>" />
+        <meta name="keywords" content=<?php echo $config['Keywords']; ?> />
+        <meta name="author" content="<?php echo $config['Author']; ?>">
         
-		<title><?php echo $config['Title'] .' : '. $Kht_Title; ?></title>		   		                        
-        <link title="<?php echo $config['Title']; ?> News"  rel="alternate"  type="application/rss+xml"  href="<?php echo $config['InstallPath']; ?>/rss.php" />
-        <link rel="stylesheet" href="<?php echo $config['InstallPath']; ?>/template/styles/style.css" /> 
+		<title><?php echo $config['Title'] .' : '. $Kht_Title; ?></title>		   	                        
+        <link title="<?php echo $config['Title']; ?> News"  rel="alternate"  type="application/rss+xml"  href="<?php echo Kht_GetRootPath(); ?>/rss.php" />
+        <link rel="stylesheet" href="<?php echo Kht_GetThemePath(); ?>/styles/style.css" /> 
         
-        <link type="text/css" rel="stylesheet" href="<?php echo $config['InstallPath']; ?>/template/syntaxhighlighter/styles/shThemeRDark.css"/>
-		<script src="<?php echo $config['InstallPath']; ?>/template/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></script>
-        <script src="<?php echo $config['InstallPath']; ?>/template/syntaxhighlighter/scripts/shAutoloader.js" type="text/javascript"></script>
-        <script src="<?php echo $config['InstallPath']; ?>/template/syntaxhighlighter/scripts/shBrushPython.js" type="text/javascript"></script>
+        <link type="text/css" rel="stylesheet" href="<?php echo Kht_GetThemePath(); ?>/syntaxhighlighter/styles/shThemeRDark.css"/>
+		<script src="<?php echo Kht_GetThemePath() ; ?>/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></script>
+        <script src="<?php echo Kht_GetThemePath() ; ?>/syntaxhighlighter/scripts/shAutoloader.js" type="text/javascript"></script>
+        <script src="<?php echo Kht_GetThemePath();  ?>/syntaxhighlighter/scripts/shBrushPython.js" type="text/javascript"></script>
  
+        
         <script type="text/javascript">
             SyntaxHighlighter.all();
         </script>
@@ -40,34 +41,28 @@
     <body> 
         <div id="header"> 
                	                                        
-                <a href="/" title="<?php echo $config['Title']; ?> Logo"><img src="<?php echo $config['InstallPath']; ?>/template/styles/logo.png" width=122 height=127></a>               
+                <a href="/" title="<?php echo $config['Title']; ?> Logo"><img src="<?php echo Kht_GetThemePath(); ?>/styles/logo.png" width=122 height=127></a>               
                 <h1><?php echo $config['Title']; ?></h1>
                 <div id="nav">
                 	
-                	<ul>          
+                	<ul>                 	     	
                          <?php 
-                                foreach ($config['Menu'] as $link => $title) {                                   
+                                foreach ($config['Menu'] as $link => $title) {       
                                     if ($Kht_CurrentPath === $link) {
                                         echo '<li><a href="'.$link.'" class="current" title= "'.$title.'">'.$title.'</a><span> </span></li>'; 
                                     } else {
                                         echo '<li><a href="'.$link.'" title= "'.$title.'">'.$title.'</a><span> </span></li>';
                                     }
                                 }
-                         ?>
-            		</ul>            	
+                          ?>           		</ul>            	
                 </div>                
             </div>
                         
 	        <div id="main">
                 <div id="content">
-                <?php 
-
-                        foreach ($Kht_Content as $post) {
-                            echo '<div class="article">'.$post['data'].'<p class="meta">'.strftime('%A %d %B %Y',$post['date']).' / '.$post['tags'].'</p>'.'</div>';
-                        }
-                        echo '<p class="archive-link"><a href="/archives">Archives</a></p>';
-
-                ?>
+                    <div class="article">
+                        <?php echo $Kht_Content; ?>
+                    </div>
                 </div>
     		</div>
     
