@@ -20,7 +20,7 @@
     * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
     *
     */
-
+  
     //General Conf
     $config = array(
                                             'Name' => 'Khertan.net',
@@ -29,15 +29,15 @@
                                             'Keywords' => 'Maemo, MeeGo, Python, Software, Developer',
                                             'Author' => 'Benoît HERVIER',
                                             'Lang' => 'en-GB',
-                                            'Menu' => array('/KhtCMS/about'=>'About & Contact',
-                                                                      '/KhtCMS/blog' => 'Blog',
-                                                                       '/KhtCMS/projects' => 'Projects',
+                                            'Menu' => array('/about'=>'About & Contact',
+                                                                      '/blog' => 'Blog',
+                                                                       '/projects' => 'Projects',
                                                                      ),
                                             'Default' => 'Blog',
                                             'Licence' => 'http://creativecommons.org/licenses/by/3.0/',
                                             'UseCache' => False,
                                             'Theme' => 'Kht',
-                                            'InstallPath' => '/KhtCMS/',
+                                            'InstallPath' => '/',
                                             
     );
     
@@ -71,5 +71,5 @@
         file_put_contents('./.htaccess',$content);
     }
     
-
+ 
 ?>

@@ -8,18 +8,17 @@ SetEnv MAGIC_QUOTES 0
 RewriteEngine on
 
 RewriteCond %{REQUEST_FILENAME}  !-f
-RewriteRule ^medias/(.*)$ /KhtCMS/datas/medias/$1 [QSA,L]
+RewriteRule ^medias/(.*)$ /datas/medias/$1 [QSA,L]
 
 RewriteCond %{REQUEST_FILENAME}  !-f  [NC]
-RewriteRule ^blog/(.*\.(gif|jpg|png))$ /KhtCMS/datas/medias/$1 [QSA,L]
+RewriteRule ^blog/(.*\.(gif|jpg|png))$ /datas/medias/$1 [QSA,L]
 
 RewriteCond %{REQUEST_FILENAME}  !-f  [NC]
-RewriteRule ^(.*\.(gif|jpg|png))$ /KhtCMS/datas/medias/$1 [QSA,L]
+RewriteRule ^(.*\.(gif|jpg|png))$ /datas/medias/$1 [QSA,L]
 
 RewriteCond %{REQUEST_FILENAME}  !-f  [NC]
-RewriteRule ^softwares/(.*)$ /KhtCMS/$1 [QSA,L]
+RewriteRule ^softwares/(.*)$ /$1 [QSA,L]
 
 RewriteCond %{REQUEST_FILENAME}  !-f  [NC]
 RewriteCond %{REQUEST_URI} !^/owncloud  [NC]
-RewriteRule ^(.*) /KhtCMS/index.php?path=$1 [E=REMOTE_USER:%{HTTP:Authorization},L]
-#test
+RewriteRule ^(.*) /index.php?path=$1 [E=REMOTE_USER:%{HTTP:Authorization},L]

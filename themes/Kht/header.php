@@ -1,16 +1,19 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $config['Lang']; ?>">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+       
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 	<head>		
 		
 		<meta charset="utf-8">
         <meta name="description" content="<?php echo $config['Description']; ?>" />
-        <meta name="keywords" content=<?php echo $config['Keywords']; ?> />
+        <meta name="keywords" content=".<?php echo $config['Keywords']; ?>" />
         <meta name="author" content="<?php echo $config['Author']; ?>">
-        
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
 		<title><?php echo $config['Title'] .' : '. $Kht_Title; ?></title>		   	                        
         <link title="<?php echo $config['Title']; ?> News"  rel="alternate"  type="application/rss+xml"  href="<?php echo Kht_GetRootPath(); ?>/rss.php" />
-        <link rel="stylesheet" href="<?php echo Kht_GetThemePath(); ?>/styles/style.css" /> 
+        <link rel="stylesheet" href="<?php echo Kht_GetThemePath(); ?>/styles/style.css" media="screen" /> 
         
         <link type="text/css" rel="stylesheet" href="<?php echo Kht_GetThemePath(); ?>/syntaxhighlighter/styles/shThemeRDark.css"/>
 		<script src="<?php echo Kht_GetThemePath() ; ?>/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></script>

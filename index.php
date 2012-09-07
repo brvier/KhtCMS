@@ -60,6 +60,13 @@
         return $request;
     }
 
+    function Kht__ob_start() {
+        ob_start('ob_gzhandler');
+
+        header('Content-Type: text/html; charset: UTF-8');
+        header('Cache-Control: must-revalidate');
+    }
+    
     function Kht_ServeMarkdownPage($page) {
         
         
@@ -94,7 +101,7 @@
                 
         
             //Templatization
-            ob_start("ob_gzhandler");
+            Kht__ob_start();
             include './themes/'.$config['Theme'].'/page.php';
             $content = ob_get_contents();
 
@@ -233,7 +240,7 @@
         }
         
         //Templatization
-        ob_start("ob_gzhandler");
+        Kht__ob_start();
         if ($limit === -1)
             include './themes/'.$config['Theme'].'/archives.php';
         else
