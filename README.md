@@ -1,6 +1,9 @@
 KhtCMS
 =====
 
+**Sources :** [Git Repository][1]  
+**Bug Tracker :** [GitHub Issues Tracker][2]  
+
 About what ?
 ---------------
 
@@ -10,7 +13,7 @@ Instead of others static blog generator, the page are generated on the server, s
 
 Features
 ----------
-* Page and blog post are generated only the first time, after a cached html version of the page is used.
+* Page and blog post are generated only the first time, after a cached html version of the page is used until no modification are made on the source file.
 * Markdown syntax
 * No docs, so nothing to read
 
@@ -20,3 +23,10 @@ Devel in progress :
 * Cleaning code, and write some comment
 * Add more content examples
 * Write other themes
+
+Licence
+---------
+Licenced under GPLv3.
+
+[1]:https://github.com/khertan/KhtCMS/
+[2]:https://github.com/khertan/KhtCMS/issues
