@@ -29,6 +29,7 @@
             -> Libs
             -> Pages
     */
+    $KHT_CMSVERSION = '0.5';
     
     include('config.php');
 
