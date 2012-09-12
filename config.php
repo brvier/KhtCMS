@@ -32,6 +32,7 @@
                                             'Menu' => array('/about'=>'About & Contact',
                                                                       '/blog' => 'Blog',
                                                                        '/projects' => 'Projects',
+                                                                       '/downloads' => 'Downloads',
                                                                      ),
                                             'Default' => 'Blog',
                                             'Licence' => 'http://creativecommons.org/licenses/by/3.0/',
