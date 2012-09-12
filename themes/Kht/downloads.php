@@ -27,40 +27,28 @@
                                     } else {
                                         return round($a_bytes / 1208925819614629174706176, 2) .' YiB';
                                     }
-                                }
+                                }                               
                                 
-                                function endswith($hay, $needle) {
-                                  return substr($hay, -strlen($needle)) === $needle;
-                                }
-
-                                function recurseDir($dir, $level)
-                                {     
-                                    if(is_dir($dir)){
-                                        if($dh = opendir($dir)){
-                                            if ($level>1) {
-                                                echo "<h$level>" . basename($dir). "</h$level><p><ul>"; }
-                                            while(($file = readdir($dh)) !== false){                                            
-                                                if($file != '.' && $file != '..'){                                                
-                                                    if (!endswith($dir, '/')) {
-                                                        $dir .= '/';
-                                                    }
-                                                    if(!is_dir($dir . $file)) {                                                       
-                                                        echo "<li><a href=\"".$dir.$file."\">".$file.' ('._format_bytes(filesize($dir.$file)).")</a></li>\n"; 
-                                                    }else{             
-                                                        
-                                                        // since it is a directory we recurse it.
-                                                        recurseDir($dir .  $file, $level+1);
-                                                    }	
-                                                }
-                                            }
-                                            echo('</ul></p>');
+                                                       
+                                function recursePrint($array, $level) {
+                                    
+                                    
+                                    foreach ($array as $dir => $file) {
+                                        if (gettype($file) == 'array') {
+                                            echo "<h$level>".basename($dir)."</h$level><ul>";
+                                            krsort($file);
+                                            recursePrint($file, $level+1);
+                                            echo '</ul>';
+                                            }                                    
+                                        else {
+                                            echo "<li><a href=\"".$dir."\">".$file." ("._format_bytes(filesize($dir)).")</a></li>";
                                         }
-                                        closedir($dh);
                                     }
                                 }
+                                                                
+                                ksort($Kht_Content);
+                                recursePrint($Kht_Content,2);
                                 
-                                                        
-                                recurseDir($path, 1);
                         ?>
                     </div>
                 </div>

@@ -29,7 +29,6 @@
             -> Libs
             -> Pages
     */
-    $KHT_CMSVERSION = '0.5';
     
     include('config.php');
 
@@ -136,6 +135,7 @@
             }
             closedir($dh);
         }
+        
         // Is a blog   
         $path = './datas/blog/';
         $dh = opendir($path);
@@ -150,7 +150,7 @@
             }
             closedir($dh);
         }
-
+        
         foreach($redirect as $key => $link) {
             if (strcasecmp($key, $request)==0) {
             header("HTTP/1.1 301 Moved Permanently");
@@ -206,7 +206,59 @@
         }
         return '';
       }
-  
+
+    function endswith($hay, $needle) {
+        return substr($hay, -strlen($needle)) === $needle;
+    }
+
+                                
+    function Kht_recurseDir($dir)
+        {     
+            $files = array();
+            
+            
+            if(is_dir($dir)){
+                if($dh = opendir($dir)){
+                    while(($file = readdir($dh)) !== false){                                            
+                        if($file != '.' && $file != '..'){                                                
+                            if (!endswith($dir, '/')) {
+                                $dir .= '/';
+                            }
+                            if(!is_dir($dir . $file)) {                                                       
+                                $files[$dir . $file] = $file; 
+                            }else{             
+                                $files[$dir . $file] = Kht_recurseDir($dir .  $file);
+                            }	
+                        }
+                    }
+                }
+                closedir($dh);
+            }
+            
+            return $files;
+        }
+                                
+    function Kht_ServeDownloads(){
+    
+        // SERVE CONTENT WITH THE TEMPLATE
+        global $config;
+        $Kht_Content = array();
+        $Kht_Title = 'Downloads';
+        $Kht_CurrentPage = 'downloads';
+        $Kht_CurrentPath = $config['InstallPath'].'downloads';
+        $path = './datas/downloads/';
+        
+        //Templatization
+        Kht__ob_start();
+        $Kht_Content = Kht_recurseDir($path);
+        include './themes/'.$config['Theme'].'/downloads.php';
+        $content = ob_get_contents();
+
+        //No Cache
+        //file_put_contents($cache_path,$content);
+        ob_end_flush();
+      }
+      
     function Kht_ServeLastBlog($limit = 5){
     
         // SERVE CONTENT WITH THE TEMPLATE
@@ -281,6 +333,8 @@
             if ($cached === False)
                 Kht_ServeLastBlog(-1);
         }
+        else if ($request == 'downloads') {
+            Kht_ServeDownloads(); }
         else {
 
                 if (file_exists('./datas/pages/'.$request.'.md')) $page = './datas/pages/'.$request.'.md';
