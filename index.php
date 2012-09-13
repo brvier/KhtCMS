@@ -74,7 +74,6 @@
         global $config;
         $Kht_Content = '';
         $Kht_CurrentPath = $config['InstallPath'] . basename ( $page , '.md');
-        $Kht_CurrentPath;
         $Kht_Title = basename ( $page , '.md');
         $Kht_CurrentPage = basename ( $page , '.md');
         
@@ -116,7 +115,7 @@
     function Kht_Redirect($request) {
         if (file_exists('./datas/'.$request.'.md')) return;
         if (file_exists('./datas/pages/'.$request.'.md')) return;
-        
+        if (file_exists('./datas/'.str_replace(' ','_',$request).'.md')) 
         $request = basename ( $request );
         
         $redirect = array();
@@ -137,6 +136,7 @@
         }
         
         // Is a blog   
+        //blog prefix missing
         $path = './datas/blog/';
         $dh = opendir($path);
         if ($dh !== false) {
@@ -340,6 +340,8 @@
                 if (file_exists('./datas/pages/'.$request.'.md')) $page = './datas/pages/'.$request.'.md';
                 else if (file_exists('./datas/pages/'.strtolower($request).'.md')) $page = './datas/pages/'.strtolower($request).'.md';
                 else if (file_exists('./datas/'.$request.'.md')) $page = './datas/'.$request.'.md';
+                else if (file_exists('./datas/'.str_replace(' ','_',$request).'.md'))
+                    $page = './datas/'.str_replace(' ', '_', $request).'.md';
                 else if (file_exists('./datas/'.strtolower($request).'.md')) $page = './datas/'.strtolower($request).'.md';
                 else {$page = './datas/pages/404.md'; header("HTTP/1.0 404 Not Found");}
                 $cached = Kht_ServePageCache($page);
