@@ -76,7 +76,7 @@
         $Kht_CurrentPath = $config['InstallPath'] . basename ( $page , '.md');
         $Kht_Title = basename ( $page , '.md');
         $Kht_CurrentPage = basename ( $page , '.md');
-        
+
         if (@is_file($page))
             {
             $fcontent = file_get_contents($page);
@@ -86,15 +86,22 @@
                 $ccontent = '';
                 $content_lines = explode("\n",$fcontent);
                 foreach ($content_lines as $line) {
-                    if (substr($line, 0, 1) !== ':') 
+                    if ((stripos($line, "Date:", 0) !== 0)
+                        && (stripos($line, "Title:", 0) !== 0)
+                        && (stripos($line, "Tags:", 0) !== 0)
+                        && (stripos($line, "Category:", 0) !== 0))
                         {$ccontent.=$line."\n";}
                 }
                 $tags = Kht_ExtractTags($fcontent);
                 if ($tags !== '')
                     $Kht_Content['tags'] = $tags;                
                 $date = Kht_ExtractDate($fcontent);
-                if ($date !== '')
+                if ($date !== 0)
                     $Kht_Content['date'] = $date;
+                $title = Kht_ExtractTitle($fcontent);
+                if ($title !== '')
+                    $Kht_Content['title'] = $title;
+
                 $Kht_Content['data'] = Markdown($ccontent);
                 }
                 
@@ -115,6 +122,7 @@
     function Kht_Redirect($request) {
         if (file_exists('./datas/'.$request.'.md')) return;
         if (file_exists('./datas/pages/'.$request.'.md')) return;
+        if (file_exists('./datas/blog/'.$request.'.md')) return;
         if (file_exists('./datas/'.str_replace(' ','_',$request).'.md')) 
         $request = basename ( $request );
         
@@ -145,6 +153,7 @@
                     if (@file_exists($path.$file)) {
                         $file=pathinfo($file,PATHINFO_FILENAME);
                         $redirect[$file] = '/blog/'.strtolower($file);
+                        $redirect[$file] = '/blog/'.strtolower($file);                        
                     }
                 }
             }
@@ -187,11 +196,27 @@
         return False;
     }
     
-    function Kht_ExtractDate($content) {
+    
+    function Kht_ExtractDateForSort($content) {
+        global $config;
         $content_lines = explode("\n",$content);
         foreach ($content_lines as $line) {
-            if (substr($line, 0, 6) == ':date ') {            
-                return strtotime(substr($line,6));            
+            if (substr($line, 0, 6) == 'Date: ') {  
+                $date = strptime(substr($line,6), $config['DateFormat']);
+                return mktime(0,0,0,$date['tm_mon'] + 1 ,
+                                                     $date['tm_mday'] + 1,
+                                                     $date['tm_year'] + 1900 );            
+                }
+        }
+        return 0;
+      }
+                                                                                                                                          
+    function Kht_ExtractDate($content) {
+        global $config;
+        $content_lines = explode("\n",$content);
+        foreach ($content_lines as $line) {
+            if (substr($line, 0, 6) == 'Date: ') {            
+                return strptime(substr($line,6), $config['DateFormat']);            
                 }
         }
         return 0;
@@ -200,8 +225,28 @@
     function Kht_ExtractTags($content) {
         $content_lines = explode("\n",$content);
         foreach ($content_lines as $line) {
-            if (substr($line, 0, 6) === ':tags ') {
+            if (substr($line, 0, 6) === 'Tags: ') {
                 return substr($line,6);
+                }
+        }
+        return '';
+      }
+
+    function Kht_ExtractCategory($content) {
+        $content_lines = explode("\n",$content);
+        foreach ($content_lines as $line) {
+            if (substr($line, 0, 10) === 'Category: ') {
+                return substr($line,10);
+                }
+        }
+        return '';
+      }
+
+    function Kht_ExtractTitle($content) {
+        $content_lines = explode("\n",$content);
+        foreach ($content_lines as $line) {
+            if (substr($line, 0, 7) === 'Title: ') {
+                return substr($line,7);
                 }
         }
         return '';
@@ -259,6 +304,32 @@
         ob_end_flush();
       }
       
+    function Kht_Pages() {
+        $dir = './datas/pages/';
+        $urlpath = $config['InstallPath'].'/pages/';
+        $dh = opendir($dir);
+        $files = array();
+
+        while (($file = readdir($dh)) !== false) {
+            $flag = false;
+            if ((endswith($file, '.md')) && (strpos($file, "~") == 0)) {
+                $content = file_get_contents($dir.$file);
+                $cat = Kht_ExtractCategory($content);
+                $path = substr($file, 0,strrpos($file,'.'));                
+                if ($cat != '') {
+                    $title = Kht_ExtractTitle($content);
+                    if (!array_key_exists($cat, $files))
+                        $files[$cat] = array($title => $urlpath.$path);
+                    else
+                        $files[$cat][$title] = $urlpath.$path;
+                }
+            }
+            if ($files[$cat])
+                ksort($files[$cat]);
+        }
+        ksort($files);
+        return $files;
+    }
     function Kht_ServeLastBlog($limit = 5){
     
         // SERVE CONTENT WITH THE TEMPLATE
@@ -280,14 +351,19 @@
                 $ccontent = '';
                 $content_lines = explode("\n",$fcontent);
                 foreach ($content_lines as $line) {
-                    if (substr($line, 0, 1) !== ':') 
+                    if ((stripos($line, "Date:", 0) !== 0)
+                        && (stripos($line, "Title:", 0) !== 0)
+                        && (stripos($line, "Tags:", 0) !== 0)
+                        && (stripos($line, "Category:", 0) !== 0))
                         {$ccontent.=$line."\n";}
-                }
+                    }
+
                 $post['data'] = Markdown($ccontent);
-                $post['date'] = $content_date;
+                $post['date'] = Kht_ExtractDate($fcontent);
                 $post['tags'] = Kht_ExtractTags($fcontent);
+                $post['category'] = Kht_ExtractCategory($fcontent);
                 $post['link'] = Kht_GetRootPath().'blog/'.htmlentities(pathinfo($dir_content, PATHINFO_FILENAME));
-                $post['title'] = pathinfo($dir_content, PATHINFO_FILENAME);
+                $post['title'] = Kht_ExtractTitle($fcontent);
                 $Kht_Content[] = $post;
             }        
         }
@@ -312,21 +388,22 @@
         while (($file = readdir($dh)) !== false) {
             $flag = false;
             if($file !== '.' && $file !== '..' && !in_array($file, $array) && ($file != ".DS_Store") && (strpos($file, "~") == 0)) {
-                $files[$file] = Kht_ExtractDate(file_get_contents($dir.$file));
+                $files[$file] = Kht_ExtractDateForSort(file_get_contents($dir.$file));
             }
         }
         arsort($files);
         return $files;
-    }
+    }    
     
     function Kht_Main() {
+        global $config;
         $request = Kht_GetRequest();
         Kht_Redirect($request);        
         
         if ($request == 'blog') {
             $cached = Kht_ServePageCache('blog.html');
             if ($cached === False)
-                Kht_ServeLastBlog();
+                Kht_ServeLastBlog($config['NumberOfPosts']);
         }
         else if ($request == 'archives') {
             $cached = Kht_ServePageCache('archives.html');
@@ -337,13 +414,19 @@
             Kht_ServeDownloads(); }
         else {
 
-                if (file_exists('./datas/pages/'.$request.'.md')) $page = './datas/pages/'.$request.'.md';
-                else if (file_exists('./datas/pages/'.strtolower($request).'.md')) $page = './datas/pages/'.strtolower($request).'.md';
+                if (file_exists('./datas/pages/'.$request.'.md'))
+                    $page = './datas/pages/'.$request.'.md';
+                else if (file_exists('./datas/pages/'.strtolower($request).'.md'))
+                    $page = './datas/pages/'.strtolower($request).'.md';
+                else if (file_exists('./datas/blog/'.$request.'.md'))
+                    $page = './datas/blog/'.$request.'.md';
+                else if (file_exists('./datas/blog/'.strtolower($request).'.md'))
+                    $page = './datas/blog/'.strtolower($request).'.md';
                 else if (file_exists('./datas/'.$request.'.md')) $page = './datas/'.$request.'.md';
                 else if (file_exists('./datas/'.str_replace(' ','_',$request).'.md'))
                     $page = './datas/'.str_replace(' ', '_', $request).'.md';
                 else if (file_exists('./datas/'.strtolower($request).'.md')) $page = './datas/'.strtolower($request).'.md';
-                else {$page = './datas/pages/404.md'; header("HTTP/1.0 404 Not Found");}
+                else {$page = './datas/pages/404.md'; error_log ( $request."\n", 3, './cache/404.log' ); header("HTTP/1.0 404 Not Found");}
                 $cached = Kht_ServePageCache($page);
                 if ($cached === False)
                     Kht_ServeMarkdownPage($page);

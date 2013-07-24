@@ -32,21 +32,22 @@
                                             'Author' => 'Benoît HERVIER',
                                             'Lang' => 'en-GB',
                                             'Menu' => array('/about'=>'About & Contact',
-                                                                      '/blog' => 'Blog',
-                                                                       '/projects' => 'Projects',
-                                                                       '/downloads' => 'Downloads',
-                                                                     ),
+                                                            '/blog' => 'Blog',
+                                                            '/archives' => 'Archives',
+                                                            '/downloads' => 'Downloads',),
                                             'Default' => 'Blog',
                                             'Licence' => 'http://creativecommons.org/licenses/by/3.0/',
-                                            'UseCache' => False,
-                                            'Theme' => 'Kht2',
+                                            'UseCache' => True,
+                                            'DateFormat' => '%d/%m/%Y',
+                                            'NumberOfPosts' => 1,
+                                            'Theme' => 'Minimal',
                                             'InstallPath' => '/',
                                             'GoogleAnalyticsIdent' => 'UA-5504886-1',
-                                            
+					    'ApiKey' => 'sdfzef4ds6f4sd2f1321',          
     );
     
     //DO NOT EDIT BEYONG THIS LINE
-    if (@file_exists('./.hhtaccess')) {
+    if (@file_exists('./.htaccess')) {
     } else {
         $content = "SetEnv PHP_VER 5\n";
         $content .= "\n";

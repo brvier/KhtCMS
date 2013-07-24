@@ -90,11 +90,27 @@ class RSSFeed {
         return '';
       }
   
-    function Kht_ExtractDate($content) {
+    function Kht_ExtractDateForSort($content) {
+        global $config;
         $content_lines = explode("\n",$content);
         foreach ($content_lines as $line) {
-            if (substr($line, 0, 6) == ':date ') {            
-                return strtotime(substr($line,6));            
+            if (substr($line, 0, 6) == 'Date: ') {  
+                $date = strptime(substr($line,6), $config['DateFormat']);
+                return mktime(0,0,0,$date['tm_mon'] + 1 ,
+                                                     $date['tm_mday'] + 1,
+                                                     $date['tm_year'] + 1900 );            
+                }
+        }
+        return 0;
+      }
+
+
+    function Kht_ExtractDate($content) {
+        global $config;
+        $content_lines = explode("\n",$content);
+        foreach ($content_lines as $line) {
+            if (substr($line, 0, 6) == 'Date: ') {            
+                return strptime(substr($line,6), $config['DateFormat']);            
                 }
         }
         return 0;
@@ -106,7 +122,7 @@ class RSSFeed {
         while (($file = readdir($dh)) !== false) {
             $flag = false;
             if($file !== '.' && $file !== '..' && !in_array($file, $array) && ($file != ".DS_Store") && (strpos($file, "~") == 0)) {
-                $files[$file] = Kht_ExtractDate(file_get_contents($dir.$file));
+                $files[$file] = Kht_ExtractDateForSort(file_get_contents($dir.$file));
             }
         }
         arsort($files);
@@ -129,11 +145,14 @@ class RSSFeed {
                 $ccontent = '';
                 $content_lines = explode("\n",$fcontent);
                 foreach ($content_lines as $line) {
-                    if (substr($line, 0, 1) !== ':') 
+                    if ((stripos($line, "Date:", 0) !== 0)
+                        && (stripos($line, "Title:", 0) !== 0)
+                        && (stripos($line, "Tags:", 0) !== 0)
+                        && (stripos($line, "Category:", 0) !== 0))
                         {$ccontent.=$line."\n";}
-                }
+                    }
                 $post['data'] = Markdown($ccontent);
-                $post['date'] = $content_date;
+                $post['date'] = Kht_ExtractDate($fcontent);
                 $post['tags'] = Kht_ExtractTags($fcontent);
                 $post['link'] = '/blog/'.htmlentities(pathinfo($dir_content, PATHINFO_FILENAME));
                 $post['title'] = pathinfo($dir_content, PATHINFO_FILENAME);
@@ -162,7 +181,7 @@ $path = './datas/blog/';
 
 $posts = Kht_GetLastBlogPosts(5);
 foreach ($posts as $post) {
-    $myfeed->SetItem($post['link'],$post['title'],$post['data'],strftime('%A %d %B %Y', $post['date']));
+    $myfeed->SetItem($post['link'],$post['title'],$post['data'],strftime('%A %d %B %Y',mktime(0,0,0,$post['date']['tm_mon'] + 1, $post['date']['tm_mday'] + 1, $post['date']['tm_year'] + 1900 )));
 }                       
 
 echo $myfeed->output();
