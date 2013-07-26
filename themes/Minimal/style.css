@@ -1,0 +1,35 @@
+body {
+  padding-top: 80px;
+}
+@media (max-width: 979px) {
+  body {
+    padding-top: 0px;
+  }
+}
+
+.brand img {
+    margin-right: 10px;
+}
+
+.span8 img {
+    margin: 10px;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+.sidebar-nav {
+    padding: 9px 0;
+}
+
+@media (max-width: 979px) {
+    /* Enable use of floated navbar text */
+    .navbar-text.pull-right {
+        float: none;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
+
+

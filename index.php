@@ -152,8 +152,7 @@
                 if($file !== '.' && $file !== '..' && !in_array($file, $redirect) && ($file != ".DS_Store") && (strpos($file, "~") == 0)) {
                     if (@file_exists($path.$file)) {
                         $file=pathinfo($file,PATHINFO_FILENAME);
-                        $redirect[$file] = '/blog/'.strtolower($file);
-                        $redirect[$file] = '/blog/'.strtolower($file);                        
+                        $redirect[$file] = '/blog/'.strtolower($file);                
                     }
                 }
             }
@@ -172,9 +171,10 @@
     function Kht_ServePageCache($page) {
         global $config;
         $cache_path = './cache/' . str_replace('/','_',$page) . '.html';
-        if ((is_file($cache_path)) && ($config['UseCache'])){
+        if ((is_file($cache_path)) && ($config['UseCache'] === True)){
             if (filemtime($cache_path) < filemtime($page)) {
-                return False;}
+                return False;
+            }
             else {
                 echo file_get_contents($cache_path);
                 return True;
@@ -186,11 +186,12 @@
     function Kht_ServeCache($page) {
         $cache_path = './cache/'.$page.'.html';
         if (file_exists($cache_path)) {
-            if (time()-3600 < filemtime($cache_path))
-                return False;
-            else {
+            if (filemtime($cache_path) > time()-3600) {
                 echo file_get_contents($cache_path);
-                return True;
+                return True;                
+            }
+            else {
+                return False;
             }
         }
         return False;
@@ -201,7 +202,7 @@
         global $config;
         $content_lines = explode("\n",$content);
         foreach ($content_lines as $line) {
-            if (substr($line, 0, 6) == 'Date: ') {  
+            if (strtolower (substr($line, 0, 6)) == 'date: ') {  
                 $date = strptime(substr($line,6), $config['DateFormat']);
                 return mktime(0,0,0,$date['tm_mon'] + 1 ,
                                                      $date['tm_mday'] + 1,
@@ -215,7 +216,7 @@
         global $config;
         $content_lines = explode("\n",$content);
         foreach ($content_lines as $line) {
-            if (substr($line, 0, 6) == 'Date: ') {            
+            if (strtolower (substr($line, 0, 6)) == 'date: ') {            
                 return strptime(substr($line,6), $config['DateFormat']);            
                 }
         }
@@ -225,7 +226,7 @@
     function Kht_ExtractTags($content) {
         $content_lines = explode("\n",$content);
         foreach ($content_lines as $line) {
-            if (substr($line, 0, 6) === 'Tags: ') {
+            if (strtolower (substr($line, 0, 6)) === 'tags: ') {
                 return substr($line,6);
                 }
         }
@@ -235,7 +236,7 @@
     function Kht_ExtractCategory($content) {
         $content_lines = explode("\n",$content);
         foreach ($content_lines as $line) {
-            if (substr($line, 0, 10) === 'Category: ') {
+            if (strtolower (substr($line, 0, 10)) === 'category: ') {
                 return substr($line,10);
                 }
         }
@@ -245,7 +246,7 @@
     function Kht_ExtractTitle($content) {
         $content_lines = explode("\n",$content);
         foreach ($content_lines as $line) {
-            if (substr($line, 0, 7) === 'Title: ') {
+            if (strtolower (substr($line, 0, 7)) === 'title: ') {
                 return substr($line,7);
                 }
         }
@@ -377,7 +378,10 @@
         $content = ob_get_contents();
 
         //Cache it
-        $cache_path = './cache/blog.html';
+        if ($limit === -1)
+            $cache_path = './cache/archives.html';
+        else
+            $cache_path = './cache/blog.html';
         file_put_contents($cache_path,$content);
         ob_end_flush();
       }
@@ -401,12 +405,12 @@
         Kht_Redirect($request);        
         
         if ($request == 'blog') {
-            $cached = Kht_ServePageCache('blog.html');
+            $cached = Kht_ServeCache('blog');
             if ($cached === False)
                 Kht_ServeLastBlog($config['NumberOfPosts']);
         }
         else if ($request == 'archives') {
-            $cached = Kht_ServePageCache('archives.html');
+            $cached = Kht_ServeCache('archives');
             if ($cached === False)
                 Kht_ServeLastBlog(-1);
         }
