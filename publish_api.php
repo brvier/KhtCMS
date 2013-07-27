@@ -28,7 +28,7 @@
 		else
 			$type = 'blog';
 
-		if ($has_date === false) & ($type == 'blog')
+		if (($has_date === false) && ($type == 'blog'))
 		    $content = "Date: ".strftime($config['DateFormat'])."\n" . $content;
 		if ($has_title === false)
 		    $content = "Title: ".$title."\n" . $content;		
@@ -46,4 +46,4 @@
 	    echo json_encode($result); 
 		//}
 	}
-?>       
+?>        

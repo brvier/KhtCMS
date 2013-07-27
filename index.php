@@ -185,8 +185,8 @@
 
     function Kht_ServeCache($page) {
         $cache_path = './cache/'.$page.'.html';
-        if (file_exists($cache_path)) {
-            if (filemtime($cache_path) > time()-3600) {
+        if ((file_exists($cache_path)) && ($config['UseCache'] === True)) {
+            if (filemtime($cache_path)+3600 < time()) {
                 echo file_get_contents($cache_path);
                 return True;                
             }
@@ -202,7 +202,7 @@
         global $config;
         $content_lines = explode("\n",$content);
         foreach ($content_lines as $line) {
-            if (strtolower (substr($line, 0, 6)) == 'date: ') {  
+            if (stripos($line, "Date:", 0) === 0) {  
                 $date = strptime(substr($line,6), $config['DateFormat']);
                 return mktime(0,0,0,$date['tm_mon'] + 1 ,
                                                      $date['tm_mday'] + 1,
@@ -216,7 +216,7 @@
         global $config;
         $content_lines = explode("\n",$content);
         foreach ($content_lines as $line) {
-            if (strtolower (substr($line, 0, 6)) == 'date: ') {            
+            if (stripos($line, "Date:", 0) === 0) {            
                 return strptime(substr($line,6), $config['DateFormat']);            
                 }
         }
@@ -226,7 +226,7 @@
     function Kht_ExtractTags($content) {
         $content_lines = explode("\n",$content);
         foreach ($content_lines as $line) {
-            if (strtolower (substr($line, 0, 6)) === 'tags: ') {
+            if (stripos($line, "Tags:", 0) === 0) {
                 return substr($line,6);
                 }
         }
@@ -236,7 +236,7 @@
     function Kht_ExtractCategory($content) {
         $content_lines = explode("\n",$content);
         foreach ($content_lines as $line) {
-            if (strtolower (substr($line, 0, 10)) === 'category: ') {
+            if (stripos($line, "Category:", 0) === 0) {
                 return substr($line,10);
                 }
         }
@@ -246,7 +246,7 @@
     function Kht_ExtractTitle($content) {
         $content_lines = explode("\n",$content);
         foreach ($content_lines as $line) {
-            if (strtolower (substr($line, 0, 7)) === 'title: ') {
+            if (stripos($line, "Title:", 0) === 0) {
                 return substr($line,7);
                 }
         }
